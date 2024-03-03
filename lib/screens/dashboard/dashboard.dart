@@ -1,6 +1,6 @@
+import 'package:Hostinaar/components/drawer.dart';
+import 'package:Hostinaar/components/infoCard.dart';
 import 'package:flutter/material.dart';
-import 'package:polygoniar/components/drawer.dart';
-import 'package:polygoniar/components/infoCard.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});

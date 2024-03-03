@@ -1,11 +1,12 @@
+import 'package:Hostinaar/components/button.dart';
+import 'package:Hostinaar/components/inputs.dart';
+import 'package:Hostinaar/components/screen.dart';
+import 'package:Hostinaar/main.dart';
+import 'package:Hostinaar/screens/login/login.dart';
+import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:polygoniar/components/button.dart';
-import 'package:polygoniar/components/inputs.dart';
-import 'package:polygoniar/components/screen.dart';
-import 'package:polygoniar/main.dart';
-import 'package:polygoniar/screens/login/login.dart';
-import 'package:polygoniar/utilities/constants.dart';
+
 import 'package:supabase/supabase.dart';
 
 class SignUpScreen extends StatefulWidget {

@@ -1,5 +1,5 @@
+import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:polygoniar/utilities/constants.dart';
 
 class InfoCard extends StatelessWidget {
   final String title;

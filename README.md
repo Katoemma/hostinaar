@@ -1,6 +1,6 @@
-# polygoniar
+# Hostinaar
 
-A new Flutter project.
+This is a students hostel booking flutter Mobile App connected to supabase database.
 
 ## Getting Started
 
