@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:Hostinaar/components/button.dart';
 import 'package:Hostinaar/components/inputs.dart';
 import 'package:Hostinaar/components/screen.dart';
 import 'package:Hostinaar/main.dart';
+import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:Hostinaar/screens/signUp/signUpScreen.dart';
 import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -48,6 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
           email: email,
           password: password,
         );
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DashboardScreen(
+                    user: res.user)) //navigate to home screen with user data
+            );
       } catch (e) {
         if (e is AuthException) {
           //show snackBar
@@ -63,9 +67,10 @@ class _LoginScreenState extends State<LoginScreen> {
               content: const Row(
                 children: [
                   Icon(Icons.warning),
-                  Text('Check Your internet connection',style: TextStyle(
-                    fontSize: 18
-                  ),),
+                  Text(
+                    'Check Your internet connection',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
             ),
@@ -83,11 +88,13 @@ class _LoginScreenState extends State<LoginScreen> {
         screenTitle: 'Login',
         widgets: [
           MyCustomInput(
+            isPassword: false,
             inPutLabelText: 'Email',
             inPutHintText: 'your email',
             inputCotroller: _emailController,
           ),
           MyCustomInput(
+            isPassword: true,
             inPutLabelText: 'Password',
             inPutHintText: '*********',
             inputCotroller: _passwordController,

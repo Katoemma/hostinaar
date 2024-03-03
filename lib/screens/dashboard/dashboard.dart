@@ -1,25 +1,25 @@
 import 'package:Hostinaar/components/drawer.dart';
 import 'package:Hostinaar/components/infoCard.dart';
+import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({super.key, this.user});
 
- 
+  final user;
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
-  String greetings(){
+  String greetings() {
     var hour = DateTime.now().hour;
-    if(hour < 12){
+    if (hour < 12) {
       return 'Good Morning';
-    } else if(hour < 17){
+    } else if (hour < 17) {
       return 'Good Afternoon';
-    } else{
+    } else {
       return 'Good Evening';
     }
   }
@@ -29,11 +29,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // TODO: implement initState
     super.initState();
     greetings();
+    print(widget.user.email);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const MyDrawer(),
+      drawer: MyDrawer(
+        email: widget.user.email,
+      ),
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: const BoxDecoration(
@@ -82,10 +86,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: GridView.count(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                    childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 3),
+                    crossAxisSpacing: 2.0,
+                    mainAxisSpacing: 2.0,
+                    childAspectRatio: 1.4,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [

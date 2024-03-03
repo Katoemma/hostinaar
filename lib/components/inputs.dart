@@ -5,11 +5,12 @@ class MyCustomInput extends StatelessWidget {
       {super.key,
       required this.inPutLabelText,
       required this.inPutHintText,
-      required this.inputCotroller});
+      required this.inputCotroller, required this.isPassword});
 
   final String inPutLabelText;
   final String inPutHintText;
   final TextEditingController inputCotroller;
+  final bool isPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class MyCustomInput extends StatelessWidget {
           height: 8,
         ),
         TextFormField(
+          obscureText: isPassword,
           controller: inputCotroller,
           decoration: InputDecoration(
             filled: true,

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:Hostinaar/onboardingScreen.dart';
 import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +29,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       //remove the debug banner
       debugShowCheckedModeBanner: false,
-      home: currentUser != null ? const DashboardScreen() : const OnboardingScreen(),
+      home: currentUser != null
+          ? DashboardScreen(
+              user: currentUser,
+            )
+          : const OnboardingScreen(),
     );
   }
 }

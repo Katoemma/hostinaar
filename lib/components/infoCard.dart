@@ -17,6 +17,10 @@ class InfoCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(10)
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -27,11 +31,11 @@ class InfoCard extends StatelessWidget {
               ),
               Text(
                 title,
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18,color: Colors.grey[300]),
               ),
               Text(
                 info,
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16,color: Colors.grey[600]),
               ),
             ],
           ),

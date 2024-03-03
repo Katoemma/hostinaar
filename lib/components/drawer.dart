@@ -4,11 +4,18 @@ import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
   const MyDrawer({
-    super.key,
+    super.key, this.email,
   });
 
+final email;
+
+  @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     // Replace these with actual user details
@@ -27,8 +34,8 @@ class MyDrawer extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            accountEmail: const Text(
-              'johndoe@email.com',
+            accountEmail: Text(
+              '${widget.email}',
               style: TextStyle(
                 fontSize: 14,
               ),
