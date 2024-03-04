@@ -41,6 +41,7 @@ dependencies:
   localstorage: ^4.0.1+4
   easy_loading_button: ^0.3.2
   loading_animation_widget: ^1.2.0+4
+  flutter_native_splash: ^2.3.13
 
 dev_dependencies:
   flutter_test:
