@@ -2,6 +2,7 @@ import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/login/login.dart';
 import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MyDrawer extends StatefulWidget {
@@ -105,8 +106,12 @@ class _MyDrawerState extends State<MyDrawer> {
                 Text('Logout', style: TextStyle(color: Colors.red[200])),
               ],
             ),
-            onTap: () {
-              supabase.auth.signOut();
+            onTap: () async{
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await supabase.auth.signOut();
+
+              await prefs.clear();
+
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

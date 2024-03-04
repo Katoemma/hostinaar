@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:Hostinaar/components/button.dart';
 import 'package:Hostinaar/components/inputs.dart';
 import 'package:Hostinaar/components/screen.dart';
@@ -6,6 +8,7 @@ import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:Hostinaar/screens/signUp/signUpScreen.dart';
 import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -46,12 +49,20 @@ class _LoginScreenState extends State<LoginScreen> {
           email: email,
           password: password,
         );
+
+        var userDetailsFromDb = await supabase.from('users').select().eq('email', email);
+
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        print(userDetailsFromDb);
+
+        await pref.setString('userName', userDetailsFromDb[0]['userName']);
+        //redirect to dashboard screen
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DashboardScreen(
-                    user: res.user)) //navigate to home screen with user data
-            );
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DashboardScreen(),
+          ),
+        );
       } catch (e) {
         if (e is AuthException) {
           //show snackBar
@@ -64,11 +75,11 @@ class _LoginScreenState extends State<LoginScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red[500],
-              content: const Row(
+              content:  Row(
                 children: [
                   Icon(Icons.warning),
                   Text(
-                    'Check Your internet connection',
+                    '$e',
                     style: TextStyle(fontSize: 18),
                   ),
                 ],

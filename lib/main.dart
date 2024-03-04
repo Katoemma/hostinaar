@@ -29,11 +29,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       //remove the debug banner
       debugShowCheckedModeBanner: false,
-      home: currentUser != null
-          ? DashboardScreen(
-              user: currentUser,
-            )
-          : const OnboardingScreen(),
+      home: currentUser != null ? const DashboardScreen() : const OnboardingScreen(),
     );
   }
 }

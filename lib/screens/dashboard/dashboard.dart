@@ -1,18 +1,20 @@
 import 'package:Hostinaar/components/drawer.dart';
 import 'package:Hostinaar/components/infoCard.dart';
-import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key, this.user});
-
-  final user;
+  const DashboardScreen({
+    super.key,
+  });
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  late String? userName = '';
+
   String greetings() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
@@ -24,19 +26,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
+  Future getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(
+      () {
+        userName = prefs.getString('userName');
+      },
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     greetings();
-    print(widget.user.email);
+    getUserName();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MyDrawer(
-        email: widget.user.email,
+        email: 'emmy@test.com',
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),
@@ -73,7 +84,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    '${greetings()} Kato',
+                    '${greetings()} ${userName?.split(' ').first}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,

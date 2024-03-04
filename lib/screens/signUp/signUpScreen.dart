@@ -4,9 +4,9 @@ import 'package:Hostinaar/components/screen.dart';
 import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:Hostinaar/screens/login/login.dart';
-import 'package:Hostinaar/storage/localStorage.dart';
 import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:supabase/supabase.dart';
 
@@ -62,17 +62,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final userDetails = await supabase.from('users').insert(
           {'userName': username, 'email': email, 'userType': 'ST'}).select();
       print(userDetails);
-      SharedPrefenceBrain pref = SharedPrefenceBrain();
 
-      
       if (userDetails.isNotEmpty) {
-        // pref.setListValue('userDetails', userDetails)
+        SharedPreferences pref = await SharedPreferences.getInstance();
+
+        await pref.setString('userName', userDetails[0]['userName']);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => DashboardScreen(
-              user: response.user,
-            ),
+            builder: (context) => const DashboardScreen(),
           ),
         );
       }
@@ -85,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             content: Text(e.message),
           ),
         );
-      }else{
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error occured $e'),
