@@ -7,7 +7,9 @@ import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:Hostinaar/screens/signUp/signUpScreen.dart';
 import 'package:Hostinaar/utilities/constants.dart';
+import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -45,42 +47,85 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } else {
       try {
+        //show loading
+        showDialog(
+          context: context,
+          builder: (context) => Center(
+              child:
+                  LoadingAnimationWidget.beat(color: Colors.orange, size: 35)),
+        );
         AuthResponse res = await supabase.auth.signInWithPassword(
           email: email,
           password: password,
         );
 
-        var userDetailsFromDb = await supabase.from('users').select().eq('email', email);
+        var userDetailsFromDb =
+            await supabase.from('users').select().eq('email', email);
 
         SharedPreferences pref = await SharedPreferences.getInstance();
-        print(userDetailsFromDb);
+        print(userDetailsFromDb[0]['userType']);
 
         await pref.setString('userName', userDetailsFromDb[0]['userName']);
         //redirect to dashboard screen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DashboardScreen(),
-          ),
-        );
+        if (userDetailsFromDb[0]['userType'] == 'ST') {
+          Navigator.pop(context);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DashboardScreen(),
+            ),
+          );
+        } else {
+          //alert 'To use web'
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: const Text('Not A Student'),
+                    content: const Text(
+                        'You can only login on the web version of this application'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ));
+          await supabase.auth.signOut();
+          //Navigator.pop(context); // Close the dialog
+
+          //close loading dialog
+          Future.delayed(
+            const Duration(seconds: 4),
+            () async {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          );
+        }
+        // Close the dialog
       } catch (e) {
         if (e is AuthException) {
           //show snackBar
+          Navigator.pop(context); // Close the dialog
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              backgroundColor: Colors.red,
               content: Text(e.message),
             ),
           );
         } else {
+          Navigator.pop(context); // Close the dialog
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red[500],
-              content:  Row(
+              content: Row(
                 children: [
-                  Icon(Icons.warning),
+                  const Icon(Icons.warning),
                   Text(
                     '$e',
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ),
