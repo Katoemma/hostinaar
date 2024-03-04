@@ -1,6 +1,7 @@
 import 'package:Hostinaar/screens/login/login.dart';
 import 'package:Hostinaar/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -188,32 +189,37 @@ class BottomSheetWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.only(bottom: 24),
-        color: Colors.white,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginScreen(),
-              ),
-            );
-          },
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Container(
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Continue',
-                style: TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
+      padding: const EdgeInsets.only(bottom: 24),
+      color: Colors.white,
+      child: GestureDetector(
+        onTap: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          prefs.setBool('isFirstTime', false);
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LoginScreen(),
+            ),
+          );
+        },
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: Container(
+            decoration: BoxDecoration(
+              color: kPrimaryColor,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            padding: const EdgeInsets.all(16),
+            child: const Text(
+              'Continue',
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.center,
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
