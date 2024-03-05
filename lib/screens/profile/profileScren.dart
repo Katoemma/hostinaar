@@ -1,6 +1,7 @@
 import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/login/login.dart';
 import 'package:Hostinaar/screens/profile/CustomWidgets.dart';
+import 'package:Hostinaar/screens/profile/PersonalInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -101,7 +102,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 OptionsListWidget(
                   icon: Icons.person_2_outlined,
                   title: 'Personal Info',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const PersonalInfoScreen()));
+                  },
                 ),
                 OptionsListWidget(
                   icon: Icons.settings,
