@@ -1,5 +1,6 @@
 import 'package:Hostinaar/components/drawer.dart';
 import 'package:Hostinaar/components/infoCard.dart';
+import 'package:Hostinaar/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,6 +15,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   late String? userName = '';
+  late String? userEmail = '';
 
   String greetings() {
     var hour = DateTime.now().hour;
@@ -31,6 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(
       () {
         userName = prefs.getString('userName');
+        userEmail = supabase.auth.currentUser!.email;
       },
     );
   }
@@ -47,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MyDrawer(
-        email: 'emmy@test.com',
+        email: userEmail,
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),
