@@ -67,7 +67,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   profilePicture == null ? null : NetworkImage(profilePicture),
             ),
             decoration: const BoxDecoration(
-              color: kPrimaryColor,
+              color: kAdditionalColor,
             ),
           ),
           ListTile(

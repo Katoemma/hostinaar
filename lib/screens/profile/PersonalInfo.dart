@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Hostinaar/components/button.dart';
 import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/profile/CustomWidgets.dart';
 import 'package:Hostinaar/utilities/constants.dart';
@@ -79,7 +80,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Row(
                             children: [
@@ -153,21 +154,26 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           const Text('Your name'),
                           const SizedBox(height: 6),
                           TextFormField(
-                              readOnly: true,
-                              initialValue: userName,
-                              decoration: kTextFieldDecoration),
+                            readOnly: true,
+                            initialValue: userName,
+                            decoration: kTextFieldDecoration,
+                          ),
                           const SizedBox(height: 6),
                           const Text('Phone number'),
                           const SizedBox(height: 6),
                           TextFormField(
-                              initialValue: '+25671234567',
-                              decoration: kTextFieldDecoration),
+                            initialValue: '+25671234567',
+                            decoration: kTextFieldDecoration,
+                          ),
                           const SizedBox(height: 6),
                           const Text('Email'),
                           const SizedBox(height: 6),
                           TextFormField(
-                              initialValue: 'johndoe@gmail.com',
-                              decoration: kTextFieldDecoration)
+                            initialValue: 'johndoe@gmail.com',
+                            decoration: kTextFieldDecoration,
+                          ),
+                          const SizedBox(height: 16),
+                          MyButton(onPressed: (){}, btnText: 'Save', btnColour: kPrimaryColor)
                         ],
                       ),
                     ),
