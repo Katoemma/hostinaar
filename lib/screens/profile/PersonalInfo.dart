@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:Hostinaar/Controller/UserController.dart';
 import 'package:Hostinaar/components/button.dart';
 import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/profile/CustomWidgets.dart';
-import 'package:Hostinaar/utilities/constants.dart';
+import 'package:Hostinaar/helpers/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,16 +19,26 @@ class PersonalInfoScreen extends StatefulWidget {
 
 class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   late Future<String?> _userNameFuture;
+  String imageUrl = ''; // Initialize imageUrl with an empty string
 
   @override
   void initState() {
     super.initState();
     _userNameFuture = getUserDetails();
+    // Fetch imageUrl here as well, if needed
+    fetchImageUrl();
   }
 
   Future<String?> getUserDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('userName') ?? '';
+  }
+
+  void fetchImageUrl() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imageUrl = prefs.getString('profilePic') ?? '';
+    });
   }
 
   @override
@@ -84,56 +95,27 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                         children: [
                           Row(
                             children: [
-                              const CircleAvatar(
-                                radius: 45,
-                                backgroundImage: NetworkImage(
-                                    'https://ntrepidcorp.com/wp-content/uploads/2016/06/team-1.jpg'),
-                              ),
+                              imageUrl.isNotEmpty
+                                  ? CircleAvatar(
+                                      radius: 45,
+                                      backgroundImage: imageUrl.isNotEmpty
+                                          ? NetworkImage(imageUrl)
+                                          : null,
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 45,
+                                      backgroundImage:
+                                          AssetImage('images/avatar.png'),
+                                    ),
                               const SizedBox(
                                 width: 80,
                               ),
                               GestureDetector(
                                 onTap: () async {
-                                  try {
-                                    //initialise image picker package
-                                    final ImagePicker picker = ImagePicker();
-
-                                    //call the picker to select photo from gallery
-                                    final image = await picker.pickImage(
-                                        source: ImageSource.gallery);
-
-                                    //check if the image has been selected
-                                    if (image != null) {
-                                      final bytes = await image.readAsBytes();
-                                      final fileExt =
-                                          image.path.split('.').last;
-                                      final fileName =
-                                          '${DateTime.now().toIso8601String()}.$fileExt';
-                                      final filePath = fileName;
-                                      final response = await supabase.storage
-                                          .from('avatars')
-                                          .uploadBinary(
-                                            filePath,
-                                            bytes,
-                                            fileOptions: FileOptions(
-                                                contentType: image.mimeType),
-                                          );
-
-                                      if (response != null) {
-                                        //show nack bar
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            backgroundColor: Colors.green,
-                                            content: Text(
-                                                'Profile Picture Uploaded'),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  } catch (e) {
-                                    print(e.toString());
-                                  }
+                                //initialise userController class
+                                  UserController userController = UserController();
+                                //calling fuction to upload avatar
+                                  await userController.uploadAvatar(context);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -173,7 +155,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                             decoration: kTextFieldDecoration,
                           ),
                           const SizedBox(height: 16),
-                          MyButton(onPressed: (){}, btnText: 'Save', btnColour: kPrimaryColor)
+                          MyButton(
+                              onPressed: () {},
+                              btnText: 'Save',
+                              btnColour: kPrimaryColor)
                         ],
                       ),
                     ),

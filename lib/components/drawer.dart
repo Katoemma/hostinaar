@@ -1,7 +1,6 @@
-import 'package:Hostinaar/main.dart';
-import 'package:Hostinaar/screens/login/login.dart';
+import 'package:Hostinaar/Controller/UserController.dart';
 import 'package:Hostinaar/screens/profile/profileScren.dart';
-import 'package:Hostinaar/utilities/constants.dart';
+import 'package:Hostinaar/helpers/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,13 +18,15 @@ class MyDrawer extends StatefulWidget {
 
 class _MyDrawerState extends State<MyDrawer> {
   var username = '';
+  String imageUrl = '';
 
-  void getUserName() async {
+  void getUserDetails() async {
     SharedPreferences prefs = await SharedPreferences
         .getInstance(); // Get the SharedPreferences instance.
     setState(() {
       // Update the state to trigger a rebuild.
-      username = prefs.getString('userName') ??
+      username = prefs.getString('userName') ?? '';
+      imageUrl = prefs.getString('profilePic') ??
           ''; // Retrieve the username from SharedPreferences. If it's null, use an empty string.
     });
   }
@@ -35,14 +36,12 @@ class _MyDrawerState extends State<MyDrawer> {
     // TODO: implement initState
 
     super.initState();
-    getUserName();
+    getUserDetails();
   }
 
   @override
   Widget build(BuildContext context) {
     // Replace these with actual user details
-    late String profilePicture =
-        'https://ntrepidcorp.com/wp-content/uploads/2016/06/team-1.jpg';
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -61,11 +60,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 fontSize: 14,
               ),
             ),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.white,
-              foregroundImage:
-                  profilePicture == null ? null : NetworkImage(profilePicture),
-            ),
+            currentAccountPicture: imageUrl.isNotEmpty
+                ? CircleAvatar(
+                    backgroundColor: Colors.white,
+                    foregroundImage: NetworkImage(imageUrl),
+                  )
+                : const CircleAvatar(
+                    backgroundColor: Colors.white,
+                    foregroundImage: AssetImage('images/avatar.png'),
+                  ),
             decoration: const BoxDecoration(
               color: kAdditionalColor,
             ),
@@ -123,17 +126,10 @@ class _MyDrawerState extends State<MyDrawer> {
               ],
             ),
             onTap: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              await supabase.auth.signOut();
-
-              await prefs.remove('userName');
-
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ),
-              );
+              //initilise userController
+              UserController userController = UserController();
+              //call the logout function
+              userController.logoutUser(context);
             },
           ),
         ],

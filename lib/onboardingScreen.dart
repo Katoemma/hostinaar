@@ -1,5 +1,5 @@
 import 'package:Hostinaar/screens/login/login.dart';
-import 'package:Hostinaar/utilities/constants.dart';
+import 'package:Hostinaar/helpers/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

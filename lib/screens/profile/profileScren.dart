@@ -14,12 +14,14 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String userName = '';
+  String imageUrl = '';
 
   void GetUserDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(
-      (){
+      () {
         userName = prefs.getString('userName') ?? '';
+        imageUrl = prefs.getString('profilePic') ?? '';
       },
     );
   }
@@ -51,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       width: double.infinity,
                       fit: BoxFit.fill,
                     ),
-                     Column(
+                    Column(
                       children: [
                         SafeArea(
                           child: Padding(
@@ -64,11 +66,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(height: 20),
                                 Row(
                                   children: [
-                                    const CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: NetworkImage(
-                                          'https://ntrepidcorp.com/wp-content/uploads/2016/06/team-1.jpg'),
-                                    ),
+                                    imageUrl.isNotEmpty
+                                        ? CircleAvatar(
+                                            radius: 50,
+                                            backgroundImage:
+                                                NetworkImage(imageUrl),
+                                          )
+                                        : const CircleAvatar(
+                                            radius: 50,
+                                            backgroundImage: NetworkImage(
+                                                'images/avatar.png'),
+                                          ),
                                     const SizedBox(width: 60),
                                     Column(
                                       crossAxisAlignment:
@@ -103,7 +111,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: Icons.person_2_outlined,
                   title: 'Personal Info',
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const PersonalInfoScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PersonalInfoScreen()));
                   },
                 ),
                 OptionsListWidget(

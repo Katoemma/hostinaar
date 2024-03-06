@@ -16,6 +16,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   late String? userName = '';
   late String? userEmail = '';
+  late String? userPic = '';
 
   String greetings() {
     var hour = DateTime.now().hour;
@@ -34,6 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       () {
         userName = prefs.getString('userName');
         userEmail = supabase.auth.currentUser!.email;
+        userPic = prefs.getString('profilePic');
       },
     );
   }
@@ -77,9 +79,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         size: 28,
                       ),
                     ),
-                    trailing: const CircleAvatar(
+                    trailing:  CircleAvatar(
                       backgroundImage: NetworkImage(
-                        'https://ntrepidcorp.com/wp-content/uploads/2016/06/team-1.jpg',
+                        '$userPic',
                       ),
                     ),
                   ),
