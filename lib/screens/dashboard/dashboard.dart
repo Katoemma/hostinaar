@@ -145,37 +145,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           // Navigate to Notifications screen
                         },
                       ),
-                      TextButton(
-                        onPressed: () async {
-                          ProfilePicHelper profilePicHelper =
-                              ProfilePicHelper();
-
-                          // Download the image from the internet
-                          File imageFile = await profilePicHelper.downloadImage(
-                              'https://yt3.googleusercontent.com/-CFTJHU7fEWb7BYEb6Jh9gm1EpetvVGQqtof0Rbh-VQRIznYYKJxCaqv_9HeBcmJmIsp2vOO9JU=s900-c-k-c0x00ffffff-no-rj');
-
-                          // Show dialog with the downloaded image
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Downloaded Image'),
-                                content: Image.file(imageFile),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      //Navigator.of(context).pop();
-                                      print('IAMGE PATH: ${imageFile.path}');
-                                    },
-                                    child: Text('Close'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        child: Text('Display Image'),
-                      )
                     ],
                   ),
                 ),

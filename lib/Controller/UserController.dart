@@ -6,6 +6,7 @@ import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:Hostinaar/screens/login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -21,6 +22,7 @@ class UserController {
     // Clear user data from SharedPreferences if needed.
     await SharedPrefsHelper.remove('userName');
     await SharedPrefsHelper.remove('profilePic');
+    DefaultCacheManager().emptyCache(); // Clear image cache
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
