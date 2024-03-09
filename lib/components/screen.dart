@@ -18,7 +18,7 @@ class MyCustomScreen extends StatelessWidget {
         color: kPrimaryColor,
         child: Stack(
           children: [
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -33,8 +33,12 @@ class MyCustomScreen extends StatelessWidget {
             SafeArea(
               child: Column(
                 children: [
-                  Image.asset(
-                    'images/icon.png',
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Image.asset(
+                      'images/icon.png',
+                      width: MediaQuery.of(context).size.width*0.35,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

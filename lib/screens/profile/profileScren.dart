@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/login/login.dart';
 import 'package:Hostinaar/screens/profile/CustomWidgets.dart';
 import 'package:Hostinaar/screens/profile/PersonalInfo.dart';
+import 'package:Hostinaar/screens/profile/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +18,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String userName = '';
   String imageUrl = '';
+  String fName ='';
+  String lName ='';
 
   void GetUserDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -22,6 +27,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       () {
         userName = prefs.getString('userName') ?? '';
         imageUrl = prefs.getString('profilePic') ?? '';
+        fName = userName.split(' ')[0];
+        lName = userName.split(' ')[1];
       },
     );
   }
@@ -49,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Stack(
                   children: [
                     Image.asset(
-                      'images/profileBg.png',
+                      'images/myBg1_2.png',
                       width: double.infinity,
                       fit: BoxFit.fill,
                     ),
@@ -70,24 +77,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ? CircleAvatar(
                                             radius: 50,
                                             backgroundImage:
-                                                NetworkImage(imageUrl),
+                                                FileImage(File(imageUrl)),
                                           )
                                         : const CircleAvatar(
                                             radius: 50,
-                                            backgroundImage: NetworkImage(
-                                                'images/avatar.png'),
+                                            backgroundImage:
+                                                AssetImage('images/avatar.png'),
                                           ),
                                     const SizedBox(width: 60),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(userName,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 26,
-                                                fontFamily: 'NotoSan',
-                                                fontWeight: FontWeight.w600)),
+                                        Text(
+                                          fName,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 26,
+                                              fontFamily: 'NotoSan',
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Text(
+                                          lName,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 26,
+                                              fontFamily: 'NotoSan',
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                         const Text(
                                           'Student',
                                           style: TextStyle(
@@ -120,7 +137,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 OptionsListWidget(
                   icon: Icons.settings,
                   title: 'Setting',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SettingsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 OptionsListWidget(
                   icon: Icons.help_center,

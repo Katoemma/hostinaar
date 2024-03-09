@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyCustomInput extends StatelessWidget {
+class MyCustomInput extends StatefulWidget {
   const MyCustomInput(
       {super.key,
       required this.inPutLabelText,
@@ -13,21 +13,30 @@ class MyCustomInput extends StatelessWidget {
   final bool isPassword;
 
   @override
+  State<MyCustomInput> createState() => _MyCustomInputState();
+}
+
+class _MyCustomInputState extends State<MyCustomInput> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(inPutLabelText),
+        Text(widget.inPutLabelText),
+        if (widget.inPutLabelText.isNotEmpty)
         const SizedBox(
           height: 8,
         ),
         TextFormField(
-          obscureText: isPassword,
-          controller: inputCotroller,
+          obscureText: widget.isPassword,
+          controller: widget.inputCotroller,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.grey[200],
-            hintText: inPutHintText,
+            hintText: widget.inPutHintText,
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(
                 18,

@@ -1,7 +1,7 @@
 import 'package:Hostinaar/Controller/UserController.dart';
-import 'package:Hostinaar/components/button.dart';
-import 'package:Hostinaar/components/inputs.dart';
-import 'package:Hostinaar/components/screen.dart';
+import 'package:Hostinaar/Components/button.dart';
+import 'package:Hostinaar/Components/inputs.dart';
+import 'package:Hostinaar/Components/screen.dart';
 import 'package:Hostinaar/screens/signUp/signUpScreen.dart';
 import 'package:Hostinaar/helpers/constants.dart';
 import 'package:flutter/material.dart';

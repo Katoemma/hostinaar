@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:Hostinaar/helpers/PrefsBrain.dart';
+import 'package:Hostinaar/helpers/userProfilePic.dart';
 import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:Hostinaar/screens/login/login.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserController {
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 //initialise sharedPrefsHelper
   SharedPrefsHelper sharedPrefsHelper = SharedPrefsHelper();
 
@@ -16,6 +20,7 @@ class UserController {
     supabase.auth.signOut();
     // Clear user data from SharedPreferences if needed.
     await SharedPrefsHelper.remove('userName');
+    await SharedPrefsHelper.remove('profilePic');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -61,6 +66,13 @@ class UserController {
         //save user details to shared preferences
         await SharedPrefsHelper.saveString(
             'userName', userDetailsFromDb[0]['userName']);
+        if(userDetailsFromDb[0]['profilePic'] != null){
+          ProfilePicHelper profilePicHelper = ProfilePicHelper();
+          //download image to cache
+          File profilePic = await profilePicHelper.downloadImage(userDetailsFromDb[0]['profilePic']);
+          //save the file path to sharedPreference
+          await SharedPrefsHelper.saveString('profilePic', profilePic.path);
+        }
 
         //redirect to dashboard screen
         if (userDetailsFromDb[0]['userType'] == 'ST') {
@@ -91,7 +103,6 @@ class UserController {
           );
           //call the logoutUser method
           await supabase.auth.signOut();
-
 
           //close loading dialog
           Future.delayed(
@@ -135,13 +146,10 @@ class UserController {
   }
 
 //function to upload avatar
-  Future<void> uploadAvatar(BuildContext context) async {
+  Future<void> uploadAvatar(BuildContext context, image) async {
     try {
-      // initialize image picker package
-      final ImagePicker picker = ImagePicker();
-
-      // call the picker to select a photo from the gallery
-      final image = await picker.pickImage(source: ImageSource.gallery);
+      //initialise profilePic helper
+      ProfilePicHelper profilePicHelper = ProfilePicHelper();
 
       // check if an image has been selected
       if (image != null) {
@@ -158,9 +166,11 @@ class UserController {
           final String publicUrl =
               supabase.storage.from('avatars').getPublicUrl(filePath);
 
+          //Download the image to cache manager
+          File localImage = await profilePicHelper.downloadImage(publicUrl);
+
           // save the public URL to shared preferences and update the database with the new URL
-          await SharedPrefsHelper.saveString(
-              'profilePic', publicUrl.toString());
+          await SharedPrefsHelper.saveString('profilePic', localImage.path);
 
           final updatePic = await supabase
               .from('users')
@@ -168,7 +178,7 @@ class UserController {
                   'email', supabase.auth.currentUser!.email.toString());
 
           // if (updatePic != null && updatePic.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          scaffoldMessengerKey.currentState?.showSnackBar(
             const SnackBar(
               backgroundColor: Colors.green,
               content: Text('Profile photo updated successfully'),
@@ -178,7 +188,7 @@ class UserController {
       }
     } catch (e) {
       print(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
           content: Text('Error occurred: $e'),

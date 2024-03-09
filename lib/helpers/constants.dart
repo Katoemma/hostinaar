@@ -2,8 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-const kPrimaryColor = Color(0xFF0C7075);
-const kSecondaryColor = Color(0xFFEEA86C);
+const kPrimaryColor = Color(0xFF004225);
+const kSemiPrimaryColor = Color(0xFFF5F5DC);
+const kSecondaryColor = Color(0xFFFFB000);
 const kAdditionalColor = Color(0xFF1F1F39);
 
 InputDecoration kTextFieldDecoration = InputDecoration(

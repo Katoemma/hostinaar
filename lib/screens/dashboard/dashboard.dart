@@ -1,5 +1,8 @@
-import 'package:Hostinaar/components/drawer.dart';
-import 'package:Hostinaar/components/infoCard.dart';
+import 'dart:io';
+
+import 'package:Hostinaar/Components/drawer.dart';
+import 'package:Hostinaar/Components/infoCard.dart';
+import 'package:Hostinaar/helpers/userProfilePic.dart';
 import 'package:Hostinaar/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         constraints: const BoxConstraints.expand(),
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/finalBg.jpg'),
+            image: AssetImage('images/finalBg.png'),
             fit: BoxFit.fill,
           ),
         ),
@@ -79,11 +82,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         size: 28,
                       ),
                     ),
-                    trailing:  CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        '$userPic',
-                      ),
-                    ),
+                    trailing: userPic != null && userPic!.isNotEmpty
+                        ? CircleAvatar(
+                            backgroundImage: FileImage(File(userPic!)),
+                          )
+                        : const CircleAvatar(
+                            backgroundImage: AssetImage('images/avatar.png'),
+                          ),
                   ),
                 ),
                 Padding(
@@ -140,6 +145,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           // Navigate to Notifications screen
                         },
                       ),
+                      TextButton(
+                        onPressed: () async {
+                          ProfilePicHelper profilePicHelper =
+                              ProfilePicHelper();
+
+                          // Download the image from the internet
+                          File imageFile = await profilePicHelper.downloadImage(
+                              'https://yt3.googleusercontent.com/-CFTJHU7fEWb7BYEb6Jh9gm1EpetvVGQqtof0Rbh-VQRIznYYKJxCaqv_9HeBcmJmIsp2vOO9JU=s900-c-k-c0x00ffffff-no-rj');
+
+                          // Show dialog with the downloaded image
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Downloaded Image'),
+                                content: Image.file(imageFile),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      //Navigator.of(context).pop();
+                                      print('IAMGE PATH: ${imageFile.path}');
+                                    },
+                                    child: Text('Close'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Text('Display Image'),
+                      )
                     ],
                   ),
                 ),

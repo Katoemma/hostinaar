@@ -1,6 +1,6 @@
-import 'package:Hostinaar/components/button.dart';
-import 'package:Hostinaar/components/inputs.dart';
-import 'package:Hostinaar/components/screen.dart';
+import 'package:Hostinaar/Components/button.dart';
+import 'package:Hostinaar/Components/inputs.dart';
+import 'package:Hostinaar/Components/screen.dart';
 import 'package:Hostinaar/main.dart';
 import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:Hostinaar/screens/login/login.dart';

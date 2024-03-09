@@ -1,14 +1,12 @@
 import 'dart:io';
 
 import 'package:Hostinaar/Controller/UserController.dart';
-import 'package:Hostinaar/components/button.dart';
-import 'package:Hostinaar/main.dart';
+import 'package:Hostinaar/Components/button.dart';
 import 'package:Hostinaar/screens/profile/CustomWidgets.dart';
 import 'package:Hostinaar/helpers/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({super.key});
@@ -65,7 +63,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     Stack(
                       children: [
                         Image.asset(
-                          'images/profileSettingBg.png',
+                          'images/myBg1.png',
                           width: double.infinity,
                           fit: BoxFit.fill,
                         ),
@@ -99,7 +97,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   ? CircleAvatar(
                                       radius: 45,
                                       backgroundImage: imageUrl.isNotEmpty
-                                          ? NetworkImage(imageUrl)
+                                          ? FileImage(File(imageUrl))
                                           : null,
                                     )
                                   : const CircleAvatar(
@@ -112,21 +110,73 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               ),
                               GestureDetector(
                                 onTap: () async {
-                                //initialise userController class
-                                  UserController userController = UserController();
-                                //calling fuction to upload avatar
-                                  await userController.uploadAvatar(context);
+                                  // Open showModalBottomSheet
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Container(
+                                        height: 150, // Adjust height as needed
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            ListTile(
+                                              leading: Icon(Icons.photo_camera),
+                                              title: Text('Camera'),
+                                              onTap: () async {
+                                                //initialise user controller
+                                                UserController userController =
+                                                    UserController();
+                                                final ImagePicker picker =
+                                                    ImagePicker();
+
+                                                // call the picker to select a photo from the gallery
+                                                final image =
+                                                    await picker.pickImage(
+                                                        source:
+                                                            ImageSource.camera);
+                                                await userController
+                                                    .uploadAvatar(
+                                                        context, image);
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            ListTile(
+                                              leading: Icon(Icons.photo),
+                                              title: Text('Gallery'),
+                                              onTap: () async {
+                                                UserController userController =
+                                                    UserController();
+                                                final ImagePicker picker =
+                                                    ImagePicker();
+
+                                                // call the picker to select a photo from the gallery
+                                                final image =
+                                                    await picker.pickImage(
+                                                        source: ImageSource
+                                                            .gallery);
+                                                await userController
+                                                    .uploadAvatar(
+                                                        context, image);
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.blue[100],
+                                    color: const Color(0xFFFFB000),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 10),
-                                  child: Text(
+                                  child: const Text(
                                     'Change your photo',
-                                    style: TextStyle(color: Colors.blue[900]),
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                               )

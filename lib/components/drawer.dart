@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Hostinaar/Controller/UserController.dart';
 import 'package:Hostinaar/screens/profile/profileScren.dart';
 import 'package:Hostinaar/helpers/constants.dart';
@@ -63,14 +65,14 @@ class _MyDrawerState extends State<MyDrawer> {
             currentAccountPicture: imageUrl.isNotEmpty
                 ? CircleAvatar(
                     backgroundColor: Colors.white,
-                    foregroundImage: NetworkImage(imageUrl),
+                    foregroundImage: FileImage(File(imageUrl)),
                   )
                 : const CircleAvatar(
                     backgroundColor: Colors.white,
                     foregroundImage: AssetImage('images/avatar.png'),
                   ),
             decoration: const BoxDecoration(
-              color: kAdditionalColor,
+              color: kPrimaryColor,
             ),
           ),
           ListTile(
