@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:Hostinaar/helpers/constants.dart';
 import 'package:Hostinaar/main.dart';
-import 'package:flutter/material.dart';
 
 class HostelListingScreen extends StatefulWidget {
-  const HostelListingScreen({Key? key}) : super(key: key);
+  const HostelListingScreen({super.key});
 
   @override
   State<HostelListingScreen> createState() => _HostelListingScreenState();
@@ -11,11 +11,20 @@ class HostelListingScreen extends StatefulWidget {
 
 class _HostelListingScreenState extends State<HostelListingScreen> {
   List<Map<String, dynamic>> hostels = [];
+  late TextEditingController _searchController;
+  List<Map<String, dynamic>> filteredHostels = [];
 
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
     fetchHostels();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<void> fetchHostels() async {
@@ -23,19 +32,45 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
 
     if (response != null) {
       setState(() {
-        hostels = response as List<Map<String, dynamic>>;
+        hostels = response;
+        filteredHostels = List.from(hostels);
       });
-      // Handle error
     } else {
       print('Error fetching hostels: ${response}');
     }
   }
+
+  void filterHostels(String query) {
+  setState(() {
+    filteredHostels = hostels.where((hostel) {
+      final String name = hostel['Hostel Name'].toLowerCase();
+      final String location = hostel['Location'].toLowerCase();
+      final String lowercaseQuery = query.toLowerCase();
+
+      return name.contains(lowercaseQuery) || location.contains(lowercaseQuery);
+    }).toList();
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          foregroundColor: Colors.white,
+          title: const Text('Book Hostel'),
+          actions: [
+            GestureDetector(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Icon(Icons.tune_outlined),
+              ),
+            )
+          ],
+        ),
         body: SafeArea(
           child: Container(
             height: MediaQuery.of(context).size.height,
@@ -45,10 +80,12 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
+                      controller: _searchController,
+                      onChanged: filterHostels,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.grey[300],
-                        hintText: 'Location',
+                        hintText: 'Search by Hostel Name or Location',
                         prefixIcon: const Icon(Icons.search),
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -58,21 +95,21 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                     ),
                   ),
                   const TabBar(
-                    indicatorColor: kSecondaryColor,
-                    labelColor: kSecondaryColor,
-                    unselectedLabelColor: kPrimaryColor,
-                    tabs: [
-                    Tab(text: 'Girls Hostels'),
-                    Tab(text: 'Single Rooms'),
-                    Tab(text: 'Double Rooms'),
-                  ]),
+                      indicatorColor: kSecondaryColor,
+                      labelColor: kSecondaryColor,
+                      unselectedLabelColor: kPrimaryColor,
+                      tabs: [
+                        Tab(text: 'Girls Hostels'),
+                        Tab(text: 'Single Rooms'),
+                        Tab(text: 'Double Rooms'),
+                      ]),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height - 150.0,
+                    height: MediaQuery.of(context).size.height - 250.0,
                     child: TabBarView(children: [
                       ListView.builder(
-                        itemCount: hostels.length,
+                        itemCount: filteredHostels.length,
                         itemBuilder: (context, index) {
-                          final hostel = hostels[index];
+                          final hostel = filteredHostels[index];
                           return ListTile(
                             leading: Image.network(
                               hostel['Image'],
@@ -86,9 +123,9 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                         },
                       ),
                       ListView.builder(
-                        itemCount: hostels.length,
+                        itemCount: filteredHostels.length,
                         itemBuilder: (context, index) {
-                          final hostel = hostels[index];
+                          final hostel = filteredHostels[index];
                           return ListTile(
                             leading: Image.network(
                               hostel['Image'],
@@ -102,9 +139,9 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                         },
                       ),
                       ListView.builder(
-                        itemCount: hostels.length,
+                        itemCount: filteredHostels.length,
                         itemBuilder: (context, index) {
-                          final hostel = hostels[index];
+                          final hostel = filteredHostels[index];
                           return Card(
                             elevation: 4,
                             shape: RoundedRectangleBorder(
@@ -114,7 +151,7 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.vertical(
+                                  borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(12)),
                                   child: Image.network(
                                     hostel['Image'],
@@ -130,20 +167,20 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                                     children: [
                                       Text(
                                         hostel['Hostel Name'],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 8),
+                                      const SizedBox(height: 8),
                                       Text(
                                         'Location: ${hostel['Location']}',
-                                        style: TextStyle(fontSize: 16),
+                                        style: const TextStyle(fontSize: 16),
                                       ),
-                                      SizedBox(height: 8),
+                                      const SizedBox(height: 8),
                                       Text(
                                         'Monthly Rent: \$${hostel['Monthly Rent (USD)']}',
-                                        style: TextStyle(fontSize: 16),
+                                        style: const TextStyle(fontSize: 16),
                                       ),
                                     ],
                                   ),
