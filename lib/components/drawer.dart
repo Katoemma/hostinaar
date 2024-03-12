@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Hostinaar/Controller/UserController.dart';
+import 'package:Hostinaar/screens/booking/HostelListingScreen.dart';
 import 'package:Hostinaar/screens/profile/profileScren.dart';
 import 'package:Hostinaar/helpers/constants.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +92,14 @@ class _MyDrawerState extends State<MyDrawer> {
                 Text('Bookings'),
               ],
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HostelListingScreen(),
+                ),
+              );
+            },
           ),
           ListTile(
             title: const Row(

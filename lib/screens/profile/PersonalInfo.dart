@@ -6,6 +6,7 @@ import 'package:Hostinaar/screens/profile/CustomWidgets.dart';
 import 'package:Hostinaar/helpers/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
@@ -121,8 +122,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                               MainAxisAlignment.spaceEvenly,
                                           children: <Widget>[
                                             ListTile(
-                                              leading: Icon(Icons.photo_camera),
-                                              title: Text('Camera'),
+                                              leading: const Icon(Icons.photo_camera),
+                                              title: const Text('Camera'),
                                               onTap: () async {
                                                 //initialise user controller
                                                 UserController userController =
@@ -135,15 +136,23 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                                     await picker.pickImage(
                                                         source:
                                                             ImageSource.camera);
+
+                                                            showDialog(context: context, builder: (context) => Center(
+                                                  child: Column(children: [
+                                                    LoadingAnimationWidget.fourRotatingDots(color: Colors.blue, size: 50),
+                                                    const Text('Uploading...', style: TextStyle(fontSize: 20),),
+                                                  ],),
+                                                ));
                                                 await userController
                                                     .uploadAvatar(
                                                         context, image);
                                                 Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
                                               },
                                             ),
                                             ListTile(
-                                              leading: Icon(Icons.photo),
-                                              title: Text('Gallery'),
+                                              leading: const Icon(Icons.photo),
+                                              title: const Text('Gallery'),
                                               onTap: () async {
                                                 UserController userController =
                                                     UserController();
@@ -155,9 +164,17 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                                     await picker.pickImage(
                                                         source: ImageSource
                                                             .gallery);
+                                                //show loading dialog
+                                                showDialog(context: context, builder: (context) => Center(
+                                                  child: Column(children: [
+                                                    LoadingAnimationWidget.fourRotatingDots(color: Colors.blue, size: 50),
+                                                    const Text('Uploading...', style: TextStyle(fontSize: 20),),
+                                                  ],),
+                                                ));
                                                 await userController
                                                     .uploadAvatar(
                                                         context, image);
+                                                Navigator.of(context).pop();
                                                 Navigator.of(context).pop();
                                               },
                                             ),

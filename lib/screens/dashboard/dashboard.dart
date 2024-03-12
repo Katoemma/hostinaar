@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:Hostinaar/Components/drawer.dart';
 import 'package:Hostinaar/Components/infoCard.dart';
-import 'package:Hostinaar/helpers/userProfilePic.dart';
 import 'package:Hostinaar/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
