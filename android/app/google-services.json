@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "320231889114",
+    "project_id": "hostinaar",
+    "storage_bucket": "hostinaar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320231889114:android:08f858b8e98b4461c26de3",
+        "android_client_info": {
+          "package_name": "com.example.polygoniar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvJGAplyauPfnDPr3t6bnbPLrYouNaQ00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

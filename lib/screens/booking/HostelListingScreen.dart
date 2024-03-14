@@ -99,9 +99,9 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                       labelColor: kSecondaryColor,
                       unselectedLabelColor: kPrimaryColor,
                       tabs: [
-                        Tab(text: 'Girls Hostels'),
                         Tab(text: 'Single Rooms'),
                         Tab(text: 'Double Rooms'),
+                        Tab(text: 'Girls Hostels'),
                       ]),
                   SizedBox(
                     height: MediaQuery.of(context).size.height - 250.0,
@@ -143,6 +143,7 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                         itemBuilder: (context, index) {
                           final hostel = filteredHostels[index];
                           return Card(
+                            color: Colors.white,
                             elevation: 4,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -168,6 +169,7 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
                                       Text(
                                         hostel['Hostel Name'],
                                         style: const TextStyle(
+                                          color: kPrimaryColor,
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),

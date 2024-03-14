@@ -4,12 +4,18 @@ import 'package:Hostinaar/onboardingScreen.dart';
 import 'package:Hostinaar/screens/dashboard/dashboard.dart';
 import 'package:Hostinaar/screens/login/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
     url: 'https://yuwnpdigaavzpcztqhba.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1d25wZGlnYWF2enBjenRxaGJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkzNzg1MjksImV4cCI6MjAyNDk1NDUyOX0.nz28WikelER0vLoMgpP6KlbAHmX0FSmZH5EbTKoac5U',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1d25wZGlnYWF2enBjenRxaGJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkzNzg1MjksImV4cCI6MjAyNDk1NDUyOX0.nz28WikelER0vLoMgpP6KlbAHmX0FSmZH5EbTKoac5U',
+  );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
 }
