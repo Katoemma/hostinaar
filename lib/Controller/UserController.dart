@@ -8,6 +8,7 @@ import 'package:Hostinaar/screens/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserController {
@@ -29,6 +30,79 @@ class UserController {
         builder: (context) => const LoginScreen(),
       ),
     );
+  }
+
+  //function to sign up user
+  Future<void> signUpUser(BuildContext context, username, password,confirmPassword,email) async {
+
+
+    if (username.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty ||
+        email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill all fields'),
+        ),
+      );
+      return;
+    } else if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords do not match'),
+        ),
+      );
+      return;
+    } else if (!isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid email address'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      final AuthResponse response =
+          await supabase.auth.signUp(email: email, password: password);
+      final userDetails = await supabase.from('users').insert(
+          {'userName': username, 'email': email, 'userType': 'ST'}).select();
+      print(userDetails);
+
+      if (userDetails.isNotEmpty) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+
+        await pref.setString('userName', userDetails[0]['userName']);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DashboardScreen(),
+          ),
+        );
+      }
+      // add user details to user preference
+    } catch (e) {
+      // Handle other errors, e.g., network issues
+      if (e is AuthException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error occured $e'),
+          ),
+        );
+      }
+    }
+  }
+
+  bool isValidEmail(String email) {
+    // Regular expression for validating email format
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
   }
 
   //function to login user

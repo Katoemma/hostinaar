@@ -1,4 +1,3 @@
-import 'package:Hostinaar/Controller/UserController.dart';
 import 'package:Hostinaar/Components/button.dart';
 import 'package:Hostinaar/Components/inputs.dart';
 import 'package:Hostinaar/Components/screen.dart';
@@ -19,9 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //login functionality
   void login() async {
-    //initialise UserCotroller
-    UserController userController = UserController();
-
     //organising the input values
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();

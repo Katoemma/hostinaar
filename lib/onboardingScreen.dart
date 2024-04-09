@@ -32,25 +32,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         },
         children: const [
           OnboardingPage(
-            title: 'Choose from a thousand of places',
+            title: 'Explore Student-Friendly Spaces',
             description:
-                'We provide you with a variant of accommodation for a better choice',
+                'Discover a diverse range of student-friendly accommodations',
             image: 'images/onBoarding1.png',
             currentPage: 0,
             numPages: 3,
           ),
           OnboardingPage(
-            title: 'Well-selected accommodation',
+            title: 'Your Gateway to Boundless Choices',
             description:
-                'We provide you with a variant of accommodation for a better choice',
+                'Immerse yourself in a spectrum of accommodation options, empowering you to select the perfect stay for your every adventure',
             image: 'images/onboarding2.png',
             currentPage: 1,
             numPages: 3,
           ),
           OnboardingPage(
-            title: 'Cool and secure service',
+            title: 'Explore Student-Friendly Dwellings',
             description:
-                'We provide you with a variant of accommodation for a better choice',
+                'Embark on a journey to discover a wide array of student-friendly dwellings, each thoughtfully designed to cater to the unique needs and preferences of students like you.',
             image: 'images/onboarding3.png',
             currentPage: 2,
             numPages: 3,

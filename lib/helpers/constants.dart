@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Hostinaar/Controller/UserController.dart';
 import 'package:flutter/material.dart';
 
 const kPrimaryColor = Color(0xFF004225);
@@ -19,3 +20,5 @@ InputDecoration kTextFieldDecoration = InputDecoration(
     borderSide: BorderSide(color: Colors.white),
   ),
 );
+
+UserController userController = UserController();

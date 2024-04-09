@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Hostinaar/Components/drawer.dart';
 import 'package:Hostinaar/Components/infoCard.dart';
 import 'package:Hostinaar/main.dart';
+import 'package:Hostinaar/screens/booking/Booked_hostel.dart';
 import 'package:Hostinaar/screens/todo/Todo_ListScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -118,6 +119,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         icon: Icons.home,
                         info: 'Mandela Hostel',
                         onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const BookedRoomScreen()),
+                          );
                           // Navigate to My Bookings screen
                         },
                       ),

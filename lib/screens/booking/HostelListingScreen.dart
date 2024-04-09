@@ -36,7 +36,7 @@ class _HostelListingScreenState extends State<HostelListingScreen> {
         filteredHostels = List.from(hostels);
       });
     } else {
-      print('Error fetching hostels: ${response}');
+      print('Error fetching hostels: $response');
     }
   }
 
